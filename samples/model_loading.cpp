@@ -8,6 +8,7 @@
 #include "camera.h"
 #include "model.h"
 #include "shader.h"
+#include "utils.h"
 
 #include <iostream>
 
@@ -32,7 +33,6 @@ float lastFrame = 0.0f;
 
 int main() {
   // glfw: initialize and configure
-  // ------------------------------
   glfwInit();
   glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
   glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
@@ -45,7 +45,6 @@ int main() {
 #endif
 
   // glfw window creation
-  // --------------------
   GLFWwindow* window =
       glfwCreateWindow(SCR_WIDTH, SCR_HEIGHT, "LearnOpenGL", NULL, NULL);
   if (window == NULL) {
@@ -62,25 +61,21 @@ int main() {
   glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
 
   // glad: load all OpenGL function pointers
-  // ---------------------------------------
   if (!gladLoadGLLoader((GLADloadproc)glfwGetProcAddress)) {
     std::cout << "Failed to initialize GLAD" << std::endl;
     return -1;
   }
 
   // configure global opengl state
-  // -----------------------------
   glEnable(GL_DEPTH_TEST);
 
   // build and compile shaders
-  // -------------------------
   std::string shader_path(SHADER_PATH);
   std::string model_vertex_shader = shader_path + "/model_loading.vs";
   std::string model_fragment_shader = shader_path + "/model_loading.fs";
   Shader ourShader(model_vertex_shader.c_str(), model_fragment_shader.c_str());
 
   // load models
-  // -----------
   std::string resource_path(RESOURCE_PATH);
   std::string model_path = resource_path + "/objects/nanosuit/nanosuit.obj";
   Model ourModel(model_path);
@@ -89,20 +84,16 @@ int main() {
   // glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
 
   // render loop
-  // -----------
   while (!glfwWindowShouldClose(window)) {
     // per-frame time logic
-    // --------------------
     float currentFrame = glfwGetTime();
     deltaTime = currentFrame - lastFrame;
     lastFrame = currentFrame;
 
     // input
-    // -----
     processInput(window);
 
     // render
-    // ------
     glClearColor(0.05f, 0.05f, 0.05f, 1.0f);
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
@@ -119,51 +110,55 @@ int main() {
 
     // render the loaded model
     glm::mat4 model = glm::mat4(1.0f);
-    model = glm::translate(
-        model,
-        glm::vec3(
-            0.0f, -1.75f,
-            0.0f));  // translate it down so it's at the center of the scene
-    model = glm::scale(
-        model,
-        glm::vec3(0.2f, 0.2f,
-                  0.2f));  // it's a bit too big for our scene, so scale it down
+    // translate it down so it's at the center of the scene
+    model = glm::translate(model, glm::vec3(0.0f, -1.75f, 0.0f));
+    // it's a bit too big for our scene, so scale it down
+    model = glm::scale(model, glm::vec3(0.2f, 0.2f, 0.2f));
     ourShader.setMat4("model", model);
     ourModel.Draw(ourShader);
 
     // glfw: swap buffers and poll IO events (keys pressed/released, mouse moved
     // etc.)
-    // -------------------------------------------------------------------------------
     glfwSwapBuffers(window);
     glfwPollEvents();
   }
 
   // glfw: terminate, clearing all previously allocated GLFW resources.
-  // ------------------------------------------------------------------
   glfwTerminate();
   return 0;
 }
 
 // process all input: query GLFW whether relevant keys are pressed/released this
 // frame and react accordingly
-// ---------------------------------------------------------------------------------------------------------
 void processInput(GLFWwindow* window) {
-  if (glfwGetKey(window, GLFW_KEY_ESCAPE) == GLFW_PRESS)
+  if (glfwGetKey(window, GLFW_KEY_ESCAPE) == GLFW_PRESS) {
     glfwSetWindowShouldClose(window, true);
+  }
 
-  if (glfwGetKey(window, GLFW_KEY_W) == GLFW_PRESS)
+  if (glfwGetKey(window, GLFW_KEY_W) == GLFW_PRESS) {
     camera.ProcessKeyboard(kFORWARD, deltaTime);
-  if (glfwGetKey(window, GLFW_KEY_S) == GLFW_PRESS)
+  }
+
+  if (glfwGetKey(window, GLFW_KEY_S) == GLFW_PRESS) {
     camera.ProcessKeyboard(kBACKWARD, deltaTime);
-  if (glfwGetKey(window, GLFW_KEY_A) == GLFW_PRESS)
+  }
+
+  if (glfwGetKey(window, GLFW_KEY_A) == GLFW_PRESS) {
     camera.ProcessKeyboard(kLEFT, deltaTime);
-  if (glfwGetKey(window, GLFW_KEY_D) == GLFW_PRESS)
+  }
+
+  if (glfwGetKey(window, GLFW_KEY_D) == GLFW_PRESS) {
     camera.ProcessKeyboard(kRIGHT, deltaTime);
+  }
+
+  if (glfwGetKey(window, GLFW_KEY_I) == GLFW_PRESS) {
+    const char* screenshot_file = createScreenshotBasename();
+    saveScreenshot(screenshot_file);
+  }
 }
 
 // glfw: whenever the window size changed (by OS or user resize) this callback
 // function executes
-// ---------------------------------------------------------------------------------------------
 void framebuffer_size_callback(GLFWwindow* window, int width, int height) {
   // make sure the viewport matches the new window dimensions; note that width
   // and height will be significantly larger than specified on retina displays.
@@ -171,7 +166,6 @@ void framebuffer_size_callback(GLFWwindow* window, int width, int height) {
 }
 
 // glfw: whenever the mouse moves, this callback is called
-// -------------------------------------------------------
 void mouse_callback(GLFWwindow* window, double xpos, double ypos) {
   if (firstMouse) {
     lastX = xpos;
@@ -180,8 +174,8 @@ void mouse_callback(GLFWwindow* window, double xpos, double ypos) {
   }
 
   float xoffset = xpos - lastX;
-  float yoffset =
-      lastY - ypos;  // reversed since y-coordinates go from bottom to top
+  // reversed since y-coordinates go from bottom to top
+  float yoffset = lastY - ypos;
 
   lastX = xpos;
   lastY = ypos;
@@ -190,7 +184,6 @@ void mouse_callback(GLFWwindow* window, double xpos, double ypos) {
 }
 
 // glfw: whenever the mouse scroll wheel scrolls, this callback is called
-// ----------------------------------------------------------------------
 void scroll_callback(GLFWwindow* window, double xoffset, double yoffset) {
   camera.ProcessMouseScroll(yoffset);
 }

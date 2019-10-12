@@ -4,6 +4,9 @@ project(SimpleOpenGLFramework)
 # common compile options
 add_compile_options(-DSHADER_PATH="${CMAKE_SOURCE_DIR}/shaders")
 add_compile_options(-DRESOURCE_PATH="${CMAKE_SOURCE_DIR}/resources")
+if(MSVC)
+    add_compile_options(-D_CRT_SECURE_NO_WARNINGS)
+endif(MSVC)
 
 # framework
 add_subdirectory(framework)

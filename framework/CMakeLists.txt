@@ -46,6 +46,8 @@ model.cpp
 model.h
 shader.cpp
 shader.h
+utils.cpp
+utils.h
 )
 
 add_library(framework STATIC ${framework_files})
