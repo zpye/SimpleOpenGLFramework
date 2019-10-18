@@ -18,6 +18,14 @@ add_executable(multiple_lights ${sample_path}/multiple_lights.cpp)
 target_link_libraries(multiple_lights framework)
 set_target_properties(multiple_lights PROPERTIES FOLDER "samples")
 
+add_executable(blending_sorted ${sample_path}/blending_sorted.cpp)
+target_link_libraries(blending_sorted framework)
+set_target_properties(blending_sorted PROPERTIES FOLDER "samples")
+
+add_executable(cubemaps_environment_mapping ${sample_path}/cubemaps_environment_mapping.cpp)
+target_link_libraries(cubemaps_environment_mapping framework)
+set_target_properties(cubemaps_environment_mapping PROPERTIES FOLDER "samples")
+
 if(BUILD_ASSIMP)
     add_executable(model_loading ${sample_path}/model_loading.cpp)
     target_link_libraries(model_loading framework)
