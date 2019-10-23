@@ -26,8 +26,32 @@ add_executable(cubemaps_environment_mapping ${sample_path}/cubemaps_environment_
 target_link_libraries(cubemaps_environment_mapping framework)
 set_target_properties(cubemaps_environment_mapping PROPERTIES FOLDER "samples")
 
+add_executable(anti_aliasing_offscreen ${sample_path}/anti_aliasing_offscreen.cpp)
+target_link_libraries(anti_aliasing_offscreen framework)
+set_target_properties(anti_aliasing_offscreen PROPERTIES FOLDER "samples")
+
+add_executable(shadow_mapping ${sample_path}/shadow_mapping.cpp)
+target_link_libraries(shadow_mapping framework)
+set_target_properties(shadow_mapping PROPERTIES FOLDER "samples")
+
+add_executable(point_shadows_soft ${sample_path}/point_shadows_soft.cpp)
+target_link_libraries(point_shadows_soft framework)
+set_target_properties(point_shadows_soft PROPERTIES FOLDER "samples")
+
 if(BUILD_ASSIMP)
     add_executable(model_loading ${sample_path}/model_loading.cpp)
     target_link_libraries(model_loading framework)
     set_target_properties(model_loading PROPERTIES FOLDER "samples")
+endif(BUILD_ASSIMP)
+
+if(BUILD_ASSIMP)
+    add_executable(geometry_shader_exploding_normal_visualization ${sample_path}/geometry_shader_exploding_normal_visualization.cpp)
+    target_link_libraries(geometry_shader_exploding_normal_visualization framework)
+    set_target_properties(geometry_shader_exploding_normal_visualization PROPERTIES FOLDER "samples")
+endif(BUILD_ASSIMP)
+
+if(BUILD_ASSIMP)
+    add_executable(asteroids_instanced ${sample_path}/asteroids_instanced.cpp)
+    target_link_libraries(asteroids_instanced framework)
+    set_target_properties(asteroids_instanced PROPERTIES FOLDER "samples")
 endif(BUILD_ASSIMP)
