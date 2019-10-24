@@ -38,6 +38,10 @@ add_executable(point_shadows_soft ${sample_path}/point_shadows_soft.cpp)
 target_link_libraries(point_shadows_soft framework)
 set_target_properties(point_shadows_soft PROPERTIES FOLDER "samples")
 
+add_executable(normal_mapping ${sample_path}/normal_mapping.cpp)
+target_link_libraries(normal_mapping framework)
+set_target_properties(normal_mapping PROPERTIES FOLDER "samples")
+
 if(BUILD_ASSIMP)
     add_executable(model_loading ${sample_path}/model_loading.cpp)
     target_link_libraries(model_loading framework)
