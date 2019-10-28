@@ -42,13 +42,15 @@ camera.cpp
 camera.h
 mesh.cpp
 mesh.h
-model.cpp
-model.h
 shader.cpp
 shader.h
 utils.cpp
 utils.h
 )
+
+if(BUILD_ASSIMP)
+    list(APPEND framework_files model.cpp model.h)
+endif(BUILD_ASSIMP)
 
 add_library(framework STATIC ${framework_files})
 target_include_directories(framework PUBLIC ${CMAKE_CURRENT_SOURCE_DIR})

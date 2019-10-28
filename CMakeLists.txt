@@ -1,5 +1,12 @@
 cmake_minimum_required(VERSION 3.0)
 
+# settings properties before call project command
+set(CMAKE_DEBUG_POSTFIX "d")
+set(CMAKE_CXX_STANDARD 11)
+set(CMAKE_CXX_STANDARD_REQUIRED ON)
+set(CMAKE_CXX_EXTENSIONS ON)
+set_property(GLOBAL PROPERTY USE_FOLDERS ON)
+
 project(SimpleOpenGLFramework)
 # common compile options
 add_compile_options(-DSHADER_PATH="${CMAKE_SOURCE_DIR}/shaders")
