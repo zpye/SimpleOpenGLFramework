@@ -6,7 +6,7 @@ LearnOpenGL原作者：[Joey de Vries](https://joeydevries.com/#home)，[twitter
 
 用到的开源库：
 
-GLAD (0.1.33) / GLAD2 (2.0.0-BETA)：[https://glad.dav1d.de/](https://glad.dav1d.de/) / [https://gen.glad.sh/](https://gen.glad.sh/)
+GLAD (0.1.33) / GLAD2 (2.0.0-BETA)：[https://glad.dav1d.de/](https://glad.dav1d.de/) , [https://gen.glad.sh/](https://gen.glad.sh/)
 
 GLFW (3.3)：[https://www.glfw.org/](https://www.glfw.org/)
 
