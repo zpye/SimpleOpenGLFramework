@@ -7,6 +7,23 @@ set(CMAKE_CXX_STANDARD_REQUIRED ON)
 set(CMAKE_CXX_EXTENSIONS ON)
 set_property(GLOBAL PROPERTY USE_FOLDERS ON)
 
+if(CMAKE_SYSTEM_NAME STREQUAL "Android")
+    set(Android 1)
+    set(ANDROID_NDK "$ENV{ANDROID_NDK}" CACHE PATH "android ndk")
+    set(ANDROID_NATIVE_API_LEVEL "android-21")
+    set(ANDROID_ABI "armeabi-v7a with NEON")
+    set(CMAKE_TOOLCHAIN_FILE "$ENV{ANDROID_NDK}/build/cmake/android.toolchain.cmake")
+    set(CMAKE_CXX_COMPILER_WORKS 1)
+    # set(ANDROID_STL "c++_shared")
+    set(INSTALL_C_EXAMPLES OFF)
+
+    message(STATUS "android mode")
+    message("android ndk: ${ANDROID_NDK}")
+else()
+    set(Android 0)
+endif()
+
+
 project(SimpleOpenGLFramework)
 # common compile options
 add_compile_options(-DSHADER_PATH="${CMAKE_SOURCE_DIR}/shaders")
@@ -14,6 +31,10 @@ add_compile_options(-DRESOURCE_PATH="${CMAKE_SOURCE_DIR}/resources")
 if(MSVC)
     add_compile_options(-D_CRT_SECURE_NO_WARNINGS)
 endif(MSVC)
+
+if(Android)
+    add_compile_options(-std=c++11)
+endif(Android)
 
 # framework
 add_subdirectory(framework)

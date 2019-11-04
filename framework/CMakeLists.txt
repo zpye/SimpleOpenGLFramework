@@ -1,24 +1,39 @@
 cmake_minimum_required(VERSION 3.0)
 
 # opengl libs
+option(USE_EGL "build opengles with egl" OFF)
+set(GL_LIBS "")
+
 # glfw
-add_subdirectory(glfw-3.3)
+if(NOT USE_EGL)
+    add_subdirectory(glfw-3.3)
+    list(APPEND GL_LIBS glfw)
+endif()
 
 # glm
 add_subdirectory(glm)
 set_target_properties(glm_static PROPERTIES FOLDER "GLM")
+list(APPEND GL_LIBS glm_static)
 
 # glad
-set(glad_dir ${CMAKE_CURRENT_SOURCE_DIR}/glad)
-add_library(glad
-${glad_dir}/glad.c
-${glad_dir}/glad.h
-${glad_dir}/khrplatform.h
-)
-target_include_directories(glad PUBLIC ${CMAKE_CURRENT_SOURCE_DIR})
+if(NOT USE_EGL)
+    set(glad_dir ${CMAKE_CURRENT_SOURCE_DIR}/glad)
+    add_library(glad
+    ${glad_dir}/glad.c
+    ${glad_dir}/glad.h
+    ${glad_dir}/khrplatform.h
+    )
+    target_include_directories(glad PUBLIC ${CMAKE_CURRENT_SOURCE_DIR})
+else()
+    set(glad_dir ${CMAKE_CURRENT_SOURCE_DIR}/glad-es/src)
+    add_library(glad
+    ${glad_dir}/egl.c
+    ${glad_dir}/gles.c
+    )
+    target_include_directories(glad PUBLIC ${CMAKE_CURRENT_SOURCE_DIR}/glad-es/include)
+endif()
 set_target_properties(glad PROPERTIES FOLDER "GLAD")
-
-set(GL_LIBS glm_static glad glfw)
+list(APPEND GL_LIBS glad)
 
 # 3rdparty libs
 # stb_image
